@@ -1,9 +1,6 @@
 package ge.helan.main;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class HeLan {
 
@@ -147,10 +144,33 @@ public class HeLan {
                         pc = aVal ? pc : ((IntBlock) curr.getBlock()).getDate()-1;
                     }
                 }
+                case HALT -> {
+                    return;
+                }
             }
 
         }
         s.close();
+    }
+
+    private Map<String,Integer> getLabeling(String s){
+        String[] lines = s.split("\n");
+        Map<String,Integer> result = new HashMap<>();
+        int uselessLines = 0;
+        for(int i = 0; i < lines.length; i++) {
+            String str = lines[i];
+            if(str == "" || str.charAt(0) == '#'){
+                uselessLines++;
+                continue;
+            }
+            str = str.trim();
+            if (str.endsWith(":")) {
+                StringBuilder sb = new StringBuilder(str);
+                sb.deleteCharAt(sb.length() - 1);
+                result.put(sb.toString(), i - result.size() - uselessLines);
+            }
+        }
+        return result;
     }
 
     private List<Operation> tokenize(String s) {
@@ -158,8 +178,12 @@ public class HeLan {
         String[] lines = s.split("\n");
 
         List<Operation> result = new ArrayList<>();
+        Map<String,Integer> labels = getLabeling(s);
 
         for(String str : lines){
+            str = str.trim();
+            if (str.endsWith(":") || str == ""|| str.charAt(0) == '#') continue;
+
             String[] ope = str.split(" ");
             if (ope.length < 1)
                 continue;
@@ -189,8 +213,9 @@ public class HeLan {
                     case "ALLOC" -> result.add(new Operation(OperationType.ALLOC, new IntBlock(Integer.parseInt(ope[1]))));
                     case "LOAD" -> result.add(new Operation(OperationType.LOAD, new IntBlock(Integer.parseInt(ope[1]))));
                     case "STORE" -> result.add(new Operation(OperationType.STORE, new IntBlock(Integer.parseInt(ope[1]))));
-                    case "JUMP" -> result.add(new Operation(OperationType.JUMP, new IntBlock(Integer.parseInt(ope[1]))));
-                    case "FJUMP" -> result.add(new Operation(OperationType.FJUMP, new IntBlock(Integer.parseInt(ope[1]))));
+                    case "JUMP" -> result.add(new Operation(OperationType.JUMP, new IntBlock(labels.get(ope[1]))));
+                    case "FJUMP" -> result.add(new Operation(OperationType.FJUMP, new IntBlock(labels.get(ope[1]))));
+                    case "HALT" -> result.add(new Operation(OperationType.HALT));
                     default -> System.out.println("error");
                 }
 

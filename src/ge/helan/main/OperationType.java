@@ -23,5 +23,6 @@ public enum OperationType {
     JUMP,
     FJUMP,
     READ,
-    WRITE
+    WRITE,
+    HALT
 }
