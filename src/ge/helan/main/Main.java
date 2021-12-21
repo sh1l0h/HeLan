@@ -12,7 +12,7 @@ public class Main {
 
         HeLan h = null;
         try {
-            h = new HeLan(new String ( Files.readAllBytes( Paths.get("/home/mirian/HeLan/test.hl") ) ));
+            h = new HeLan(new String ( Files.readAllBytes( Paths.get(args[0]) ) ));
         } catch (IOException e) {
             e.printStackTrace();
         }
