@@ -1,18 +1,27 @@
 package ge.helan.main;
 
-public class IntBlock implements Block{
-    private final int date;
+public class IntBlock implements Block, Comparable<Block> {
+    private final int data;
 
     public IntBlock(int date) {
-        this.date = date;
+        this.data = date;
     }
 
-    public int getDate() {
-        return date;
+    public String getTypeName(){
+        return "INTEGER";
+    }
+    @Override
+    public Object getData() {
+        return data;
     }
 
     @Override
     public String toString() {
-        return date + "";
+        return data + "";
+    }
+    
+    @Override
+    public int compareTo(Block block) {
+        return (int)getData() - (int) block.getData();
     }
 }

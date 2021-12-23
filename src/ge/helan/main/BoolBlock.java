@@ -1,18 +1,28 @@
 package ge.helan.main;
 
 public class BoolBlock implements Block{
-    private final boolean date;
+    private final boolean data;
 
     public BoolBlock(boolean date) {
-        this.date = date;
+        this.data = date;
+    }
+    @Override
+    public Object getData() {
+        return data;
     }
 
-    public boolean getDate() {
-        return date;
+    @Override
+    public String getTypeName() {
+        return "BOOLEAN";
     }
 
     @Override
     public String toString() {
-        return date + "";
+        return data + "";
+    }
+
+    @Override
+    public int compareTo(Block block) {
+        return 0;
     }
 }

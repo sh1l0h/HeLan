@@ -1,5 +1,6 @@
 package ge.helan.main;
 
-public interface Block {
-    public String toString();
+public interface Block extends Comparable<Block> {
+    Object getData();
+    String getTypeName();
 }
